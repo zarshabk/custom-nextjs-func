@@ -6,9 +6,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-const session = cookies().get("session")?.value;
+
 export default function HeadLinks() {
-  const { email } = JSON.parse(session);
+  const session = cookies().get("session")?.value;
+  const { email } = JSON.parse(session ? session : "");
   return (
     <div className="flex gap-4 items-center">
       {session ? (
