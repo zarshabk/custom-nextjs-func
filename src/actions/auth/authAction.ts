@@ -8,10 +8,12 @@ import { redirect } from 'next/navigation'
 export const CreateUser = async(formData:FormData)=>{
 try {
     await Connection()
-    const values = Object.fromEntries(formData);
+   // const values = Object.fromEntries(formData);
     
-    const {username,email,password}=values;
-
+   // const {username,email,password}=values;
+    const username = formData.get('username') as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
     const user = await User.findOne({email:email});
 
     if(user){
@@ -42,9 +44,12 @@ export const loginUser = async(formData:FormData)=>{
     try {
         await Connection()
 
-        const values = Object.fromEntries(formData)
+        // const values = Object.fromEntries(formData)
 
-        const {email,password}=values;
+        // const {email,password}=values;
+
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
         
         const user = await User.findOne({email:email})
 
