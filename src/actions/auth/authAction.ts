@@ -2,6 +2,7 @@
 import {Connection} from '@/config/Db'
 import User from '@/models/user'
 import bcryptjs  from 'bcryptjs'
+import { error } from 'console'
 
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -17,7 +18,10 @@ try {
     const user = await User.findOne({email:email});
 
     if(user){
-       throw new Error("user already exist")
+       return {
+        error:true,
+        message:"user already exist"
+       }
     }
   
     const pass = bcryptjs.hashSync(password)
@@ -28,10 +32,13 @@ try {
     password
     })
 
-   
+   return {error:false,message:"account has been created successfully"}
  
 } catch (error:any) {
-    throw new Error(error)
+    return {
+        error:true,
+        message:"something wen wrong"+error,
+       }
 }
 redirect('/login')
 }
@@ -90,4 +97,12 @@ export const loginUser = async(formData:FormData)=>{
     }
 
     redirect("/dashboard")
+}
+
+
+
+
+export const Logout = async()=>{
+    cookies().delete("session")
+    redirect('/')
 }

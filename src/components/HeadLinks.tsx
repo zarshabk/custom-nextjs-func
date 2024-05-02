@@ -4,12 +4,15 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { Logout } from "@/actions/auth/authAction";
 
 export default function HeadLinks() {
   const session = cookies().get("session")?.value;
-  const { email } = JSON.parse(session ? session : "");
+  const user = session ? JSON.parse(session) : null;
   return (
     <div className="flex gap-4 items-center">
       {session ? (
@@ -24,11 +27,27 @@ export default function HeadLinks() {
                 alt=""
               />
             </DropdownMenuTrigger>
+
             <DropdownMenuContent>
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuItem>Team</DropdownMenuItem>
-              <DropdownMenuItem>Subscription</DropdownMenuItem>
+              <DropdownMenuLabel>
+                <span>
+                  {user?.username}
+                  <br />
+                  <span className="text-sm text-gray-500">{user?.email}</span>
+                </span>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer">
+                <Link href={"/dashboard"}>Dashboard</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <form action={Logout}>
+                  <button type="submit">Logout</button>
+                </form>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </>
