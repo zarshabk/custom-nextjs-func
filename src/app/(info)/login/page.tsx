@@ -1,6 +1,12 @@
 import LoginForm from "@/components/LoginForm";
+import { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+export function generateMetadata(): Metadata {
+  return {
+    title: "login here",
+  };
+}
 
 export default function page() {
   const session = cookies().get("session");

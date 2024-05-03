@@ -15,7 +15,7 @@ export default function layout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
-      <section className=" min-h-screen w-full">
+      <section className=" min-h-screen my-container bg-gray-100 w-full">
         <Header />
         <main className="w-full  lg:max-w-5xl m-auto">{children}</main>
         <Footer />

@@ -9,23 +9,38 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Logout } from "@/actions/auth/authAction";
+import User from "@/models/user";
+import { CurrentUser } from "@/actions/action";
 
-export default function HeadLinks() {
+export default async function HeadLinks() {
   const session = cookies().get("session")?.value;
   const user = session ? JSON.parse(session) : null;
+  const curUser = await CurrentUser(user?.id);
+
+  console.log("currnent user", curUser);
   return (
     <div className="flex gap-4 items-center">
       {session ? (
         <>
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1IBSu3vaIzwrefUP5qqDTpZhHQzHlaychkW3_z0q1rg&s"
-                height={60}
-                width={60}
-                className="rounded-full shadow-lg"
-                alt=""
-              />
+              {curUser ? (
+                <img
+                  src={curUser?.image}
+                  className="rounded-full h-[60px] w-[60px] object-cover shadow-lg"
+                  alt="kdfklf"
+                />
+              ) : (
+                <img
+                  src={
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1IBSu3vaIzwrefUP5qqDTpZhHQzHlaychkW3_z0q1rg&s"
+                  }
+                  height={60}
+                  width={60}
+                  className="rounded-full shadow-lg"
+                  alt=""
+                />
+              )}
             </DropdownMenuTrigger>
 
             <DropdownMenuContent>
@@ -41,7 +56,10 @@ export default function HeadLinks() {
                 <Link href={"/dashboard"}>Dashboard</Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">
-                Profile
+                <Link href={"/profile"}>Profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <Link href={"/post"}>Create Post</Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">
                 <form action={Logout}>
