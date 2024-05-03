@@ -19,6 +19,7 @@ export default async function page({
   console.log("params ", params, "serch");
 
   const posts = await getUsersPost(searchParams.q || "all", user?.id);
+  console.log("parmmm", searchParams.q);
   // const setParams = (value: string) => {
   //   new URLSearchParams({ q: value }).toString();
   // };
@@ -26,15 +27,36 @@ export default async function page({
     <div className="my-10">
       <div className="p-5 bg-white shadow">
         <div className="flex gap-2 p-2 items-center border-b-[1px] border-gray-200">
-          <button className="p-2 px-3 hover:bg-gray-200 bg-green-500 text-white rounded-sm">
+          <Link
+            href={"/dashboard?q=all"}
+            className={`p-2 px-3 ${
+              searchParams?.q === "all" || searchParams === undefined
+                ? "bg-green-500 text-white"
+                : "hover:bg-gray-200 "
+            } rounded-sm`}
+          >
             All Posts
-          </button>
-          <button className="p-2 px-3 hover:bg-gray-200 border-b-[2px] border-green-500 rounded-sm">
+          </Link>
+          <Link
+            href={"/dashboard?q=published"}
+            className={`p-2 px-3 ${
+              searchParams?.q === "published"
+                ? "bg-green-500 text-white"
+                : "hover:bg-gray-200 "
+            } rounded-sm`}
+          >
             Published
-          </button>
-          <button className="p-2 px-3 hover:bg-gray-200 rounded-sm">
+          </Link>
+          <Link
+            href={"/dashboard?q=pending"}
+            className={`p-2 px-3 ${
+              searchParams?.q === "pending"
+                ? "bg-green-500 text-white"
+                : "hover:bg-gray-200 "
+            } rounded-sm`}
+          >
             Pending
-          </button>
+          </Link>
         </div>
 
         <div className="my-5 grid grid-cols-1 gap-3 lg:grid-cols-4 md:grid-cols-3">

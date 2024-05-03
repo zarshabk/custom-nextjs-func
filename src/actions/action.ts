@@ -8,11 +8,16 @@ import path from "path";
 import bcrypt from 'bcryptjs'
 
 
-export const addImage = async(formData:FormData)=>{
+export const addImage = async(state:any,formData:FormData)=>{
  await Connection()
 const session = cookies().get("session")?.value;
 const img = formData.get("image") as File;
 
+
+
+if(!img){
+  return {message:"Please add image",succes:false}
+}
 let user;
 if(session){
   user = JSON.parse(session)
@@ -21,10 +26,16 @@ if(session){
 const getUser = await User.findById(user.id)
 
 console.log(getUser)
+let blob:any="";
+if(!img.name){
+  return {message:"Please insert image",succes:false}
 
-const blob = await put(`profile_pic/${new Date()}/${path.extname(img.name)}`,img,{
-    access:"public",
-    addRandomSuffix:false
+}
+
+
+blob = await put(`profile_pic/${new Date()}/${path.extname(img.name)}`,img,{
+  access:"public",
+  addRandomSuffix:false
 })
 
 getUser.image = blob.url;
@@ -33,6 +44,9 @@ getUser.save()
 
 
 revalidatePath('/profile')
+
+return {message:"Image updated sucessfully",succes:true}
+
 
 }
 
@@ -50,7 +64,7 @@ return getUser;
 }
 
 
-export const changePassword = async(formData:FormData) =>{
+export const changePassword = async(state:any,formData:FormData) =>{
 
   await Connection()
   const session = cookies().get('session')?.value;
@@ -72,13 +86,12 @@ export const changePassword = async(formData:FormData) =>{
 
 
   if(!comparePass){
-    console.log("password did'nt match")
-    return;
+   
+    return {message:"please enter correct password",success:false};
   }
 
   if(newPassword !== cPassword){
-    console.log("password must match")
-    return;
+    return {message:"your new password does not match with the confirm password",success:false}
   }
 
  
@@ -87,6 +100,8 @@ export const changePassword = async(formData:FormData) =>{
   currUser.password = encPAssword;
 
   currUser.save()
-  console.log("password changed")
+
   revalidatePath("/profile")
+
+  return {message:"password changed sucessfully",success:true}
 }

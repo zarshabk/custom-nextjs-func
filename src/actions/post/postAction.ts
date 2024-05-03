@@ -9,20 +9,22 @@ export const getUsersPost = async(params:string,id:string) =>{
   let posts  = []
   if(params === "all"){
     posts = await Post.find({author:id})
+    return posts;
   }
   else if(params === 'published'){
     posts = await Post.find({author:id},{
         status:true
     })
+    return posts;
   }else{
     posts = await Post.find({author:id},{
         status:false
     })
+    return posts;
   }
 
   revalidatePath('/dashboard')
-  console.log("users posts",posts)
-  return posts;
+
 
  
 }

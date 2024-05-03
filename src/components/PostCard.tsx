@@ -29,16 +29,16 @@ export default async function PostCard({ post }) {
             perferendis repellat excepturi laborum minima!
           </p>
         </div>
-        <div className="p-2 absolute bottom-0 flex justify-between items-center">
+        <div className="p-2 absolute bottom-0 flex w-full justify-between items-center">
           <Link
             href={"/"}
             className="p-1 px-2 rounded-sm bg-green-200 text-green-600 text-sm"
           >
-            health and fitness
+            {post?.cat}
           </Link>
           <div className="flex items-center bg-gray-200 gap-1 py-1 px-2 ml-1 rounded-sm">
             <Heart size={16} className="text-red-600" />
-            <span className="text-[14px]">1k+</span>
+            <span className="text-[14px]">{post?.likes?.length}</span>
           </div>
         </div>
       </div>
